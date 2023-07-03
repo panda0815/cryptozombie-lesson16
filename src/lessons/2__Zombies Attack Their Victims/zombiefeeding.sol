@@ -2,17 +2,6 @@ pragma solidity >=0.5.0 <0.6.0;
 
 import "./zombiefactory.sol";
 
-/*
-In lesson 2, we're going to make our app more game-like: We're going to make it multi-player, and we'll 
-also be adding a more fun way to create zombies instead of just generating them randomly.
-
-How will we create new zombies? By having our zombies "feed" on other lifeforms!
-
-When a zombie feeds, it infects the host with a virus. The virus then turns the host into a new zombie 
-that joins your army. The new zombie's DNA will be calculated from the previous zombie's DNA and the 
-host's DNA.
-*/
-
 contract KittyInterface {
     // Create interface to interact with other contracts to handle multiple return values
         function getKitty(uint256 _id) external view returns (
