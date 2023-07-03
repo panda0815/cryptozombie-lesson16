@@ -14,8 +14,8 @@ host's DNA.
 */
 
 contract KittyInterface {
-    // Create interface to interact with other contracts to handle multiple return values
-        function getKitty(uint256 _id) external view returns (
+  // Create interface to interact with other contracts to handle multiple return values
+  function getKitty(uint256 _id) external view returns (
         bool isGestating,
         bool isReady,
         uint256 cooldownIndex,
@@ -31,23 +31,32 @@ contract KittyInterface {
 
 contract ZombieFeeding is ZombieFactory {
   // Initialize contract inherited from Zombie Factory using address from Kitty interface
-  address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
-  KittyInterface kittyContract = KittyInterface(ckAddress);
+
+  KittyInterface kittyContract;
+
+  function setKittyContractAddress(address _address) external onlyOwner {
+    kittyContract = KittyInterface(_address);
+  }
+
+  function _triggerCooldown(Zombie storage _zombie) internal {
+    _zombie.readyTime = uint32(now + cooldownTime);
+  }
+
+  function _isReady(Zombie storage _zombie) internal view returns (bool) {
+    return (_zombie.readyTime <= now);
+  }
 
   function feedAndMultiply(uint _zombieId, uint _targetDna, string memory _species) public {
-    /// Verify zombie owner 
-    require(msg.sender == zombieToOwner[_zombieId]);
-    /// Add zombie id to storage
-    Zombie storage myZombie = zombies[_zombieId];
-    /// Take only last 16 digits of dna.
-    _targetDna = _targetDna % dnaModulus;
-    /// Declare new dna as average.
-    uint newDna = (myZombie.dna + _targetDna) / 2;
-    /// If dna is a cat, replace last two digits with 99 (cats have 9 lives)
+    require(msg.sender == zombieToOwner[_zombieId]); /// Verify zombie owner 
+    Zombie storage myZombie = zombies[_zombieId]; /// Add zombie id to storage
+    require(_isReady(myZombie)); /// Verify zombie had cool down period
+    _targetDna = _targetDna % dnaModulus; /// Take only last 16 digits of dna.
+    uint newDna = (myZombie.dna + _targetDna) / 2; /// Declare new dna as average.
     if (keccak256(abi.encodePacked(_species)) == keccak256(abi.encodePacked("kitty"))) {
-      newDna = newDna - newDna % 100 + 99;
+      newDna = newDna - newDna % 100 + 99; /// If dna is a cat, replace last two digits with 99 (cats have 9 lives)
     }
     _createZombie("NoName", newDna);
+    _triggerCooldown(myZombie);
   }
 
   function feedOnKitty(uint _zombieId, uint _kittyId) public {
