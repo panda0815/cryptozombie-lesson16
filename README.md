@@ -99,3 +99,20 @@ Using Chainlink Data Feeds is a way to cheaply, more accurately, and with more s
 
 There is so much more to Chainlink Oracles than what we've just covered here, and we are going to go over how this all works, as well as some other incredibly powerful features. The next lesson demonstrates how to work with Truffle, Hardhat, Front Ends, DeFi, and more that bring Chainlink Data Feeds to life even more. Once you learn some of those concepts, you can come back to the Truffle Starter Kit, Hardhat Starter Kit, and Brownie Starter Kit (Chainlink Mix), to build sophisticated smart contract applications in development suites.
 
+### III | Testing and Deploying DApps with Oracle and Truffle
+
+#### Deploying DApps with Truffle
+Install Truffle and additional packages once (requires node.js installed)
+    `npm install truffle -g`
+    `npm install truffle-hdwallet-provider`
+    `npm install loom-truffle-provider`
+
+Initialize Truffle
+    `truffle init`
+
+Run compiler to translate contracts into bytecode and build artifacts
+    `truffle compile`
+
+Deploy Contract (try with --network rinkeby, --network loom_testnet, --network basechain)
+    `truffle migrate`
+
