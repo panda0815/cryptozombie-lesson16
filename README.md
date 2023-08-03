@@ -103,16 +103,33 @@ There is so much more to Chainlink Oracles than what we've just covered here, an
 
 #### Deploying DApps with Truffle
 Install Truffle and additional packages once (requires node.js installed)
-    `npm install truffle -g`
-    `npm install truffle-hdwallet-provider`
-    `npm install loom-truffle-provider`
+    ```
+    npm install truffle -g
+    npm install truffle-hdwallet-provider
+    npm install loom-truffle-provider
+    ``````
 
 Initialize Truffle
-    `truffle init`
+    ```truffle init```
 
 Run compiler to translate contracts into bytecode and build artifacts
-    `truffle compile`
+    ```truffle compile```
 
 Deploy Contract (try with --network rinkeby, --network loom_testnet, --network basechain)
-    `truffle migrate`
+    ```truffle migrate```
+
+Run
+    ```npm run dev```
+
+
+
+
+#### Testing Smart Contracts with Truffle
+Create new test file
+    ```touch test/CryptoZombies.js.```
+
+
+
+Test
+    ```truffle test```
 
