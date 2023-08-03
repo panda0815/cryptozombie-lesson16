@@ -133,3 +133,12 @@ Create new test file
 Test
     ```truffle test```
 
+
+
+#### How to Build an Oracle
+initialize project
+    ```npm init -y```
+
+install dependencies
+    ```npm i truffle openzeppelin-solidity loom-js loom-truffle-provider bn.js axios```
+
