@@ -123,7 +123,6 @@ Run
 
 
 
-
 #### Testing Smart Contracts with Truffle
 Create new test file
     ```touch test/CryptoZombies.js.```
@@ -136,9 +135,43 @@ Test
 
 
 #### How to Build an Oracle
+##### Create the migration files
+To deploy the oracle contract, you must create a file called the ./oracle/migrations/2_eth_price_oracle.js with the following content:
+
+    ```
+    const EthPriceOracle = artifacts.require('EthPriceOracle')
+    module.exports = function (deployer) {
+        deployer.deploy(EthPriceOracle)
+    }
+    ```
+
+Similarly, to deploy the caller contract, you must create a file called ./caller/migrations/02_caller_contract.js with the following content:
+
+    ```
+    const CallerContract = artifacts.require('CallerContract')
+    module.exports = function (deployer) {
+        deployer.deploy(CallerContract)
+    }
+    ```
+
+
+Update package.json file -> add scripts to package.json to automatically update when deployed
+    ```cd oracle && npx truffle migrate --network extdev --reset -all && cd ..```
+    ```cd caller && npx truffle migrate --network extdev --reset -all && cd ..```
+
+deploy all 
+    ```npm run deploy:all```
+
 initialize project
     ```npm init -y```
 
 install dependencies
     ```npm i truffle openzeppelin-solidity loom-js loom-truffle-provider bn.js axios```
+
+start oracle
+    ```node EthPriceOracle.js.```
+
+start client 
+    ```node Client.js```
+
 

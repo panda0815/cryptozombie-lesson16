@@ -1,15 +1,16 @@
+// build client for interacting with oracle
 const common = require('./utils/common.js')
 const SLEEP_INTERVAL = process.env.SLEEP_INTERVAL || 2000
 const PRIVATE_KEY_FILE_NAME = process.env.PRIVATE_KEY_FILE || './caller/caller_private_key'
 const CallerJSON = require('./caller/build/contracts/CallerContract.json')
 const OracleJSON = require('./oracle/build/contracts/EthPriceOracle.json')
 
-async function getCallerContract(web3js) {
+async function getCallerContract (web3js) {
     const networkId = await web3js.eth.net.getId()
     return new web3js.eth.Contract(CallerJSON.abi, CallerJSON.networks[networkId].address)
 }
 
-async function retrieveLatestEthPrice() {
+async function retrieveLatestEthPrice () {
     const resp = await axios({
         url: 'https://api.binance.com/api/v3/ticker/price',
         params: {
@@ -48,6 +49,6 @@ async function init() {
     const oracleAddress = OracleJSON.networks[networkId].address
     await callerContract.methods.setOracleInstanceAddress(oracleAddress).send({from: ownerAddress})
     setInterval(async () => {
-        // Start here
+        await callerContract.methods.updateEthPrice().send({ from: ownerAddress })
     }, SLEEP_INTERVAL);
 })()
